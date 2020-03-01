@@ -29,10 +29,10 @@ const Wrapper = (C) => withStore(C);
 
 class LoginView extends Component {
   state = {
-    username: '',
+    email: '',
     password: '',
     error: {
-      username: null,
+      email: null,
       password: null,
     },
   };
@@ -40,7 +40,7 @@ class LoginView extends Component {
   login() {
     const { dispatch } = this.props;
 
-    dispatch($login(this.state.username, this.state.password)).catch((error) => Dialog.toast(Dialog.FAILURE, error.message));
+    dispatch($login(this.state.email, this.state.password)).catch((error) => Dialog.toast(Dialog.FAILURE, error.message));
   }
 
   handleInputChange(event) {
@@ -61,17 +61,17 @@ class LoginView extends Component {
   }
 
   render() {
-    const { username, password, error } = this.state;
+    const { email, password, error } = this.state;
     const { processing } = this.props;
 
-    return (
+    return processing ? 'wait ...' : (
       <Form>
         <Form.Item>
           <Input
-            name="username"
+            name="email"
             prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-            placeholder="Username"
-            defaultValue={username}
+            placeholder="email"
+            defaultValue={email}
             onChange={(e) => this.handleInputChange(e)}
           />
         </Form.Item>

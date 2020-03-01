@@ -39,14 +39,14 @@ export const AuthServiceImplementation = class AuthService {
     return !!this.access_token;
   }
 
-  login(username, password) {
-    return fetch(`${API_ENDPOINT}/auth/login`, {
+  login(email, password) {
+    return fetch(`${API_ENDPOINT}/users/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        username,
+        email,
         password,
       }),
     })
@@ -64,21 +64,10 @@ export const AuthServiceImplementation = class AuthService {
   }
 
   signup(payload) {
-    const { name, email, password } = payload;
 
-    return fetch(`${API_ENDPOINT}/auth/signup`, {
+    return fetch(`${API_ENDPOINT}/users/add`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        user: {
-          name,
-          email,
-          password,
-        },
-        client: {},
-      }),
+      body: payload,
     })
       .then(FetchHelper.ResponseHandler, FetchHelper.ErrorHandler)
       .then(async ({ access_token, ...result }) => {
