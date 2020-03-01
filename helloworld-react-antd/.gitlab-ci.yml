@@ -1,0 +1,84 @@
+
+stages:
+  - prepare
+  - lint
+  - test
+  - build
+  - deploy
+
+image: node:10
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - ./node_modules/
+
+install:
+  stage: prepare
+  tags:
+    - docker
+  script:
+    - npm install
+
+lint-critical:
+  stage: lint
+  tags:
+    - docker
+  before_script:
+    - npm install
+  script:
+    - npm run lint:critical
+
+lint:
+  stage: lint
+  tags:
+    - docker
+  before_script:
+    - npm install
+  script:
+    - npm run lint
+  allow_failure: true
+
+test:
+  stage: test
+  tags:
+    - docker
+  before_script:
+    - npm install
+  script:
+    - npm run test
+  allow_failure: true
+
+build:
+  stage: build
+  tags:
+    - docker
+  script:
+    - export CI=
+    - npm run build
+  artifacts:
+    paths:
+      - ./build/
+
+# deploy:
+#   stage: deploy
+#   dependencies:
+#     - build
+#   tags:
+#     - deploy:helloworld
+#   only:
+#     - master
+#   script:
+#     - ./scripts/deploy.sh ./build/
+
+deploy:
+  stage: deploy
+  dependencies:
+    - build
+  tags:
+    - docker
+  image: emiketic/essentials
+  only:
+    - master
+  script:
+    - ./scripts/deploy.sh ./build/

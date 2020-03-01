@@ -1,0 +1,45 @@
+{
+  "private": true,
+  "name": "demo-helloworld-react-antd",
+  "version": "0.1.0",
+  "engines": {
+    "node": "^8.0.0 || ^10.0.0",
+    "npm": "^5.0.0 || ^6.0.0"
+  },
+  "scripts": {
+    "dev": "react-scripts start",
+    "lint": "eslint --ext .js ./",
+    "lint:critical": "eslint --no-eslintrc --config .eslintrc.critical.json ./",
+    "format": "prettier './**/*.{md,json,js,css,scss}' --write && eslint -o /dev/null --ext .js --fix ./ || true",
+    "test": "react-scripts test --env=jsdom --setupTestFrameworkScriptFile ./jest.setup.js",
+    "build": "react-scripts build",
+    "prebuild": "npm run build-antd",
+    "build-antd": "lessc ./src/styles/antd.less ./src/styles/antd.custom.css"
+  },
+  "dependencies": {
+    "antd": "~3.23.4",
+    "helloworld-lib": "file:lib/helloworld-lib.tgz",
+    "promise.prototype.finally": "~3.1.0",
+    "prop-types": "~15.7.2",
+    "pwacompat": "~2.0.8",
+    "react": "~16.9.0",
+    "react-dom": "~16.9.0",
+    "react-redux": "~7.1.1",
+    "react-router-dom": "~5.0.0",
+    "react-scripts": "~3.0.1",
+    "redux": "~4.0.1",
+    "redux-localstorage": "1.0.0-rc5",
+    "redux-logger": "~3.0.6",
+    "redux-thunk": "~2.3.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "10.0.3",
+    "eslint": "~6.4.0",
+    "eslint-config-airbnb": "18.0.1",
+    "eslint-plugin-import": "~2.18.2",
+    "eslint-plugin-jsx-a11y": "~6.2.1",
+    "eslint-plugin-react": "~7.14.3",
+    "less": "~3.10.3",
+    "prettier": "~1.18.2"
+  }
+}
