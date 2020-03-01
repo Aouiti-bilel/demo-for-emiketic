@@ -64,33 +64,36 @@ class LoginView extends Component {
     const { email, password, error } = this.state;
     const { processing } = this.props;
 
-    return processing ? 'wait ...' : (
-      <Form>
-        <Form.Item>
-          <Input
-            name="email"
-            prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-            placeholder="email"
-            defaultValue={email}
-            onChange={(e) => this.handleInputChange(e)}
-          />
-        </Form.Item>
-        <Form.Item>
-          <Input
-            name="password"
-            prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
-            type="password"
-            placeholder="Password"
-            defaultValue={password}
-            onChange={(e) => this.handleInputChange(e)}
-          />
-        </Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType="submit" onClick={() => this.login()}>
-            Log in
-          </Button>
-        </Form.Item>
-      </Form>
+    return processing ? ' Keep waiting :p  ...' : (
+      <div>
+        <Form>
+          <Form.Item>
+            <Input
+              name="email"
+              prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+              placeholder="email"
+              defaultValue={email}
+              onChange={(e) => this.handleInputChange(e)}
+            />
+          </Form.Item>
+          <Form.Item>
+            <Input
+              name="password"
+              prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+              type="password"
+              placeholder="Password"
+              defaultValue={password}
+              onChange={(e) => this.handleInputChange(e)}
+            />
+          </Form.Item>
+          <Form.Item>
+            <Button type="primary" htmlType="submit" onClick={() => this.login()}>
+              Log in
+            </Button>
+          </Form.Item>
+        </Form>
+        <p> Create an Account <Button> <Link to="/signup"> Signup</Link> </Button></p>
+      </div>
     );
   }
 }
