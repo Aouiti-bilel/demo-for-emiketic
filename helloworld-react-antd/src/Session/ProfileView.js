@@ -10,6 +10,7 @@ import { $fetchProfile } from '../Auth/state';
 const withStore = connect((state) => ({
   processing: state.Activity.processing,
   user: state.Auth.user,
+  profile: state.Auth.profile
 }));
 
 const propTypes = {
@@ -17,6 +18,7 @@ const propTypes = {
   ...PropTypes.withState,
   processing: PropTypes.bool.isRequired,
   user: PropTypes.User.isRequired,
+  profile: PropTypes.object.isRequired,
 };
 
 const Wrapper = (C) => withStore(C);

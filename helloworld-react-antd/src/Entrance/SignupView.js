@@ -86,7 +86,5 @@ class SignupView extends Component {
   </Form>
   }
 }
-
 SignupView.propTypes = propTypes;
-
 export default Wrapper(SignupView);

@@ -19,6 +19,8 @@ export const MODULE = 'Home';
 
 const defineInitialState = () => ({
   tasks: null,
+  profiles: [],
+  products: []
 });
 
 /**
@@ -72,7 +74,29 @@ export const $fetchTasks = StateHelper.createAsyncOperation(MODULE, 'fetchTasks'
     }
   };
 });
+// async/await implementation
+export const $fetchProfilesAndProducts = StateHelper.createAsyncOperation(MODULE, 'fetchProfilesAndProducts', () => {
+  return async (dispatch) => {
+    Activity.processing(MODULE, $fetchProfilesAndProducts.NAME);
+    dispatch($fetchProfilesAndProducts.request());
 
+    try {
+      const response = await fetch(`${API_ENDPOINT}/profile/all`, {
+        headers: {
+          Authorization: `${AuthService.getAccessToken()}`,
+        },
+      });
+      const result = await FetchHelper.ResponseHandler(response);
+
+      return dispatch($fetchProfilesAndProducts.success(result));
+    } catch (error) {
+      await FetchHelper.ErrorValueHandler(error);
+      dispatch($fetchProfilesAndProducts.failure(error));
+    } finally {
+      Activity.done(MODULE, $fetchProfilesAndProducts.NAME);
+    }
+  };
+});
 /**
  * Create task
  */
@@ -159,11 +183,16 @@ export function reducer(state = defineInitialState(), action) {
       return {
         ...state,
         tasks: null,
+        profiles: [],
+        products: []
       };
     case $fetchTasks.SUCCESS:
+    case $fetchProfilesAndProducts.SUCCESS: 
       return {
         ...state,
-        tasks: action.data,
+        tasks: action.type,
+        profiles: action.data.profiles,
+        products: action.data.products
       };
     case $createTask.SUCCESS:
       return {
@@ -189,8 +218,10 @@ export function reducer(state = defineInitialState(), action) {
  * Persister
  */
 
-export function persister({ tasks }) {
+export function persister({ tasks, profiles, products }) {
   return {
     tasks,
+    profiles,
+    products
   };
 }

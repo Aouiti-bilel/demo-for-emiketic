@@ -20,6 +20,7 @@ export const MODULE = 'Auth';
 const defineInitialState = () => ({
   authenticated: false,
   user: null,
+  profile:null
 });
 
 /**
@@ -95,10 +96,9 @@ export const $fetchProfile = StateHelper.createAsyncOperation(MODULE, 'fetchProf
   return (dispatch) => {
     Activity.processing(MODULE, $fetchProfile.NAME);
     dispatch($fetchProfile.request());
-
-    return fetch(`${API_ENDPOINT}/self/profile`, {
+    return fetch(`${API_ENDPOINT}/profile/current/company`, {
       headers: {
-        Authorization: `Bearer ${AuthService.getAccessToken()}`,
+        Authorization: `${AuthService.getAccessToken()}`,
       },
     })
       .then(FetchHelper.ResponseHandler, FetchHelper.ErrorHandler)
@@ -107,11 +107,25 @@ export const $fetchProfile = StateHelper.createAsyncOperation(MODULE, 'fetchProf
       .finally(() => Activity.done(MODULE, $fetchProfile.NAME));
   };
 });
+export const $createProfile = StateHelper.createAsyncOperation(MODULE, 'createProfile', () => {
+  return (dispatch) => {
+    Activity.processing(MODULE, $createProfile.NAME);
+    dispatch($createProfile.request());
+    return fetch(`${API_ENDPOINT}/profile/current/company`, {
+      headers: {
+        Authorization: `${AuthService.getAccessToken()}`,
+      },
+    })
+      .then(FetchHelper.ResponseHandler, FetchHelper.ErrorHandler)
+      .then((result) => dispatch($createProfile.success(result)))
+      .catch((error) => dispatch($createProfile.failure(error)))
+      .finally(() => Activity.done(MODULE, $createProfile.NAME));
+  };
+});
 
 /**
  * Reducer
  */
-
 export function reducer(state = defineInitialState(), action) {
   switch (action.type) {
     case $reset.ACTION:
@@ -123,39 +137,42 @@ export function reducer(state = defineInitialState(), action) {
       };
     case $login.SUCCESS:
     case $signup.SUCCESS:
-    case $fetchProfile.SUCCESS:
       const initials = action.user.name
         .split(/\W+/)
         .map((w) => w[0] || '')
         .join('')
         .toUpperCase();
-
       return {
         ...state,
         authenticated: true,
         user: {
           ...action.user,
           initials,
-        },
+        }
       };
-    case $logout.ACTION:
-      return {
-        ...state,
-        authenticated: false,
-        user: null,
-      };
+      case $fetchProfile.SUCCESS:
+      case $createProfile.SUCCESS:  
+        return {
+          ...state,
+          profile:action.profile
+        };
+      case $logout.ACTION:
+        return {
+          ...state,
+          authenticated: false,
+          user: null,
+        };
     default:
       return state;
   }
 }
-
 /**
  * Persister
  */
-
-export function persister({ authenticated, user }) {
+export function persister({ authenticated, user, profile }) {
   return {
     authenticated,
     user,
+    profile
   };
 }
