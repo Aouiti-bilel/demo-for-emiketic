@@ -35,7 +35,6 @@ class HomeView extends Component {
            {
               profiles
               .map(profile=>  <Row gutter={16}> <ProfilesItem profile={profile}/></Row>)
-            
            } 
        </div>       
       )

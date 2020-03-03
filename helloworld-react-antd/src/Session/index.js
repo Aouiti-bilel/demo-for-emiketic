@@ -16,6 +16,7 @@ import ProfileView from './ProfileView';
 import HomeRouter from '../Home';
 
 import { $logout } from '../Auth/state';
+import ProductDetails from '../Home/components/product/ProductDetails';
 
 const withStore = connect((state) => ({
   user: state.Auth.user,
@@ -136,7 +137,8 @@ class Session extends Component {
             <Switch>
               <Route path="/home" component={HomeRouter} />
               <Route exact path="/profile" component={ProfileView} />
-              <Redirect exact from="/*" to="/home" />
+              <Route exact path="/product/:id" component={ProductDetails} />
+              <Redirect exact from="/" to="/home" />
             </Switch>
           </Layout.Content>
         </Layout>

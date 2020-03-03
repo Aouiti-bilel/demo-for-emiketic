@@ -20,7 +20,8 @@ export const MODULE = 'Home';
 const defineInitialState = () => ({
   tasks: null,
   profiles: [],
-  products: []
+  products: [], 
+  product: null
 });
 
 /**
@@ -97,6 +98,29 @@ export const $fetchProfilesAndProducts = StateHelper.createAsyncOperation(MODULE
     }
   };
 });
+// async/await implementation
+export const $getProduct = StateHelper.createAsyncOperation(MODULE, 'getProduct', ( ID, data) => {
+  return async (dispatch) => {
+    Activity.processing(MODULE, $getProduct.NAME);
+    dispatch($getProduct.request());
+
+    try {
+      const response = await fetch(`${API_ENDPOINT}/products/product/${ID}`, {
+        headers: {
+          Authorization: `${AuthService.getAccessToken()}`,
+        },
+      });
+      const result = await FetchHelper.ResponseHandler(response);
+
+      return dispatch($getProduct.success(result));
+    } catch (error) {
+      await FetchHelper.ErrorValueHandler(error);
+      dispatch($getProduct.failure(error));
+    } finally {
+      Activity.done(MODULE, $getProduct.NAME);
+    }
+  };
+});
 /**
  * Create task
  */
@@ -127,27 +151,25 @@ export const $createTask = StateHelper.createAsyncOperation(MODULE, 'createTask'
  * Update task
  */
 
-export const $updateTask = StateHelper.createAsyncOperation(MODULE, 'updateTask', (taskId, data) => {
+export const $addLike = StateHelper.createAsyncOperation(MODULE, 'addLike', (id, data) => {
   return (dispatch) => {
-    Activity.processing(MODULE, $updateTask.NAME);
-    dispatch($updateTask.request());
+    Activity.processing(MODULE, $addLike.NAME);
+    dispatch($addLike.request());
 
-    return fetch(`${API_ENDPOINT}/client/task/${taskId}/edit`, {
+    return fetch(`${API_ENDPOINT}/products/product/like/${id}`, {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${AuthService.getAccessToken()}`,
+        Authorization: `${AuthService.getAccessToken()}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        data,
-      }),
     })
       .then(FetchHelper.ResponseHandler, FetchHelper.ErrorHandler)
-      .then((result) => dispatch($updateTask.success(result)))
-      .catch((error) => dispatch($updateTask.failure(error)))
-      .finally(() => Activity.done(MODULE, $updateTask.NAME));
+      .then((result) => dispatch($addLike.success(result)))
+      .catch((error) => dispatch($addLike.failure(error)))
+      .finally(() => Activity.done(MODULE, $addLike.NAME));
   };
 });
+
 
 /**
  * Remove task
@@ -194,16 +216,18 @@ export function reducer(state = defineInitialState(), action) {
         profiles: action.data.profiles,
         products: action.data.products
       };
+    case $getProduct.SUCCESS: 
+      return {
+        ...state,
+        product: action.data
+      }
     case $createTask.SUCCESS:
+    case $addLike.SUCCESS: 
       return {
         ...state,
-        tasks: [...state.tasks, action.data],
+        products: state.products.map((item) => (action.product._id === item.id ? action.data.likes : item.likes))
       };
-    case $updateTask.SUCCESS:
-      return {
-        ...state,
-        tasks: state.tasks.map((item) => (action.data.id === item.id ? action.data : item)),
-      };
+   
     case $fetchTasks.FAILURE:
       return {
         ...state,
