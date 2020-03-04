@@ -186,7 +186,7 @@ router.post('/product/like/:id',auth, async(req, res)=>{
           product.likes.unshift({user: req.user.id});
           product
           .save()
-          .then(product => res.status(200).json({ product : product} ))
+          .then(product => res.status(200).json({ likes : product.likes} ))
           .catch(err =>{ 
             console.log(err)  
             res.status(400).json({msg: 'Echeck Like Product'})})    

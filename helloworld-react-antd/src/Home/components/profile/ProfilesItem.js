@@ -38,12 +38,12 @@ class ProfilesItem extends Component {
                 <Col span={8}> 
                     <Card title={product.name} bordered={true}>
                        <img src={API_ENDPOINT + '/' + product.imageUrl}/> 
-                    <div style={{margin: '10px', color: 'black', padding: '10px', justifyContent: 'space-between', display: 'flex'}}>
-                     <span > Price <div style={{color: 'red'}}>{product.price} $</div></span> 
-                     <span> Size  <div style={{color: 'green'}}>{product.size}</div></span> 
-                      {product.likes.length > 0 && <span>Likes <div style={{color: 'blue'}}>{product.likes.length }</div></span>}
-                      </div>
-                 <Link to={`/product/${product._id}`} style={{ felx: 1 ,width: '100%', backgroundColor: 'black', color: 'white'}}> More Details</Link>
+                          <div style={{margin: '10px', color: 'black', padding: '10px', justifyContent: 'space-between', display: 'flex'}}>
+                            <span > Price <div style={{color: 'red'}}>{product.price} $</div></span> 
+                            <span> Size  <div style={{color: 'green'}}>{product.size}</div></span> 
+                            {product.likes.length > 0 && <span>Likes <div style={{color: 'blue'}}>{product.likes.length }</div></span>}
+                          </div>
+                       <Button style={{ felx: 1 ,width: '100%', backgroundColor: 'black'}}>  <Link  to={`/product/${product._id}`}style={{ color: 'white'}} > More Details</Link></Button> 
                     </Card>
                 </Col>)
             } 

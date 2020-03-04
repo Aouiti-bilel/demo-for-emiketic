@@ -169,6 +169,28 @@ export const $addLike = StateHelper.createAsyncOperation(MODULE, 'addLike', (id,
       .finally(() => Activity.done(MODULE, $addLike.NAME));
   };
 });
+/**
+ * Update task
+ */
+
+export const $removeLike = StateHelper.createAsyncOperation(MODULE, 'removeLike', (id, data) => {
+  return (dispatch) => {
+    Activity.processing(MODULE, $removeLike.NAME);
+    dispatch($removeLike.request());
+
+    return fetch(`${API_ENDPOINT}/products/product/unlike/${id}`, {
+      method: 'POST',
+      headers: {
+        Authorization: `${AuthService.getAccessToken()}`,
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(FetchHelper.ResponseHandler, FetchHelper.ErrorHandler)
+      .then((result) => dispatch($removeLike.success(result)))
+      .catch((error) => dispatch($removeLike.failure(error)))
+      .finally(() => Activity.done(MODULE, $removeLike.NAME));
+  };
+});
 
 
 /**
@@ -221,11 +243,12 @@ export function reducer(state = defineInitialState(), action) {
         ...state,
         product: action.data
       }
-    case $createTask.SUCCESS:
+    
     case $addLike.SUCCESS: 
+    case $removeLike.SUCCESS:
       return {
         ...state,
-        products: state.products.map((item) => (action.product._id === item.id ? action.data.likes : item.likes))
+        product: {...state.product, likes: action.likes}
       };
    
     case $fetchTasks.FAILURE:
