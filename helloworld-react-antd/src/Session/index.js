@@ -138,7 +138,7 @@ class Session extends Component {
               <Route path="/home" component={HomeRouter} />
               <Route exact path="/profile" component={ProfileView} />
               <Route exact path="/product/:id" component={ProductDetails} />
-              <Redirect exact from="/" to="/home" />
+              <Redirect exact from="/*" to="/home" />
             </Switch>
           </Layout.Content>
         </Layout>

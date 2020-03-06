@@ -6,6 +6,8 @@ import * as PropTypes from '../common/proptypes';
 import * as Dialog from '../Shared/Dialog';
 
 import { $fetchProfile } from '../Auth/state';
+import CreateProfile from './components/profile/CreateProfile';
+import LandingView from '../Entrance/LandingView';
 
 const withStore = connect((state) => ({
   processing: state.Activity.processing,
@@ -31,9 +33,9 @@ class ProfileView extends Component {
   }
 
   render() {
-    const { user, processing } = this.props;
+    const { user, processing, profile } = this.props;
 
-    return <div>ProfileView</div>;
+    return processing? <LandingView/> :  !profile  ? <CreateProfile/> : <div>ProfileView , DashboardComponent {profile.name}</div>;
   }
 }
 

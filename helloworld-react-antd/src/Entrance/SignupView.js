@@ -75,7 +75,7 @@ class SignupView extends Component {
           showUploadList={false}
           onChange={(e) =>this.handleFileChange(e)}
         >
-          {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : <div className="ant-upload-text">Upload</div>}
+          {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : <div className="ant-upload-text">Logo</div>}
         </Upload>
     </Form.Item>
     <Form.Item>

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import * as PropTypes from '../../../common/proptypes';
 import { STYLE } from '../../../common/styles';
-import  { Card, Col, Row, Button, Icon } from  'antd';
+import  { Card, Col, Row, Button, Icon, Spin } from  'antd';
 import { API_ENDPOINT } from '../../../common/config';
 import LandingView from '../../../Entrance/LandingView';
 import { $getProduct, $addLike, $removeLike } from '../../state'
@@ -24,13 +24,14 @@ const Wrapper = (C) => withStore(C);
 const ProductDetails = ({ product, processing, dispatch, match }) => {
  
     const[show, hide]= useState(false)
+    
     //ADD Like //Unlike 
     //ADD Comment 
-    //
+    
  useEffect(()=>{
      dispatch($getProduct(match.params.id))
  }, [])
-    return processing || product === null? (<LandingView/>
+    return  product === null? (<LandingView/>
       ):(
        <Fragment>
             <Button style={{ backgroundColor: 'black', marginBottom: '10px'}}> <Link to='/home' style={{ color: 'white'}}>Go Back</Link></Button>  
@@ -44,7 +45,7 @@ const ProductDetails = ({ product, processing, dispatch, match }) => {
                <Col>Description  :        {product.description}        </Col>
 
                <Button onClick={()=>dispatch($addLike(product._id))}>Like</Button>
-                  <span>{product.likes.length>0&& <h1>{product.likes.length}</h1> }</span>
+                  <span>{processing? <Spin/>:  <h1>{product.likes.length}</h1> }</span>
                <Button onClick={()=>dispatch($removeLike(product._id))}>UnLike</Button>
                <Button onClick={()=>hide(!show)}>Comments: </Button> 
                  {show&&product.comments.length>0&& product.comments.map(comment => comment.text)}

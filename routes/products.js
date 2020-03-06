@@ -211,7 +211,7 @@ router.post('/product/unlike/:id', auth, async(req, res)=>{
         // Splice Out Of Array
        await product.likes.splice(index, 1);
         //save 
-        product.save().then(product => res.status(200).json(product.likes)).catch(err => res.status(400).json(err))
+        product.save().then(product => res.status(200).json( {likes:product.likes})).catch(err => res.status(400).json(err))
     } catch (err) {
         console.log(err.message);
         res.status(500).send('Internal Server Error');

@@ -107,14 +107,16 @@ export const $fetchProfile = StateHelper.createAsyncOperation(MODULE, 'fetchProf
       .finally(() => Activity.done(MODULE, $fetchProfile.NAME));
   };
 });
-export const $createProfile = StateHelper.createAsyncOperation(MODULE, 'createProfile', () => {
+export const $createProfile = StateHelper.createAsyncOperation(MODULE, 'createProfile', (data) => {
   return (dispatch) => {
     Activity.processing(MODULE, $createProfile.NAME);
     dispatch($createProfile.request());
-    return fetch(`${API_ENDPOINT}/profile/current/company`, {
+    return fetch(`${API_ENDPOINT}/profile/add/company`, {
+      method: 'POST',
       headers: {
         Authorization: `${AuthService.getAccessToken()}`,
       },
+      body: data
     })
       .then(FetchHelper.ResponseHandler, FetchHelper.ErrorHandler)
       .then((result) => dispatch($createProfile.success(result)))
