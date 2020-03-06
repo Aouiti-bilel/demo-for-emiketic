@@ -148,7 +148,7 @@ class CreateProfile extends Component {
     </Form.Item>
     <Form.Item>
       <Button type="primary" htmlType="submit" onClick={() => this.buildProfile()}>
-        Sign Up
+        Register
       </Button>
     </Form.Item>
   </Form>

@@ -288,10 +288,11 @@ export function reducer(state = defineInitialState(), action) {
  * Persister
  */
 
-export function persister({ tasks, profiles, products }) {
+export function persister({ tasks, profiles, products, product }) {
   return {
     tasks,
     profiles,
-    products
+    products,
+    product
   };
 }

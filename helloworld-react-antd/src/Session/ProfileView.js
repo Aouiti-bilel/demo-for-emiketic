@@ -8,11 +8,13 @@ import * as Dialog from '../Shared/Dialog';
 import { $fetchProfile } from '../Auth/state';
 import CreateProfile from './components/profile/CreateProfile';
 import LandingView from '../Entrance/LandingView';
+import ProductList from './components/product/ProductList';
+import { API_ENDPOINT } from '../common/config';
 
 const withStore = connect((state) => ({
   processing: state.Activity.processing,
   user: state.Auth.user,
-  profile: state.Auth.profile
+  profile: state.Auth.profile,
 }));
 
 const propTypes = {
@@ -35,7 +37,16 @@ class ProfileView extends Component {
   render() {
     const { user, processing, profile } = this.props;
 
-    return processing? <LandingView/> :  !profile  ? <CreateProfile/> : <div>ProfileView , DashboardComponent {profile.name}</div>;
+    return processing? <LandingView/> :  !profile  ? <CreateProfile/> :
+    (
+     <div>
+       <h1>{profile.name}</h1>
+       <img src={API_ENDPOINT + '/' + profile.imageUrl} whidth= '50px' height="50px"/>
+       {// TODO ADD PRoduct}
+       }
+      <ProductList/>
+        </div>
+    )
   }
 }
 

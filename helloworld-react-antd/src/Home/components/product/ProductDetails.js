@@ -45,7 +45,7 @@ const ProductDetails = ({ product, processing, dispatch, match }) => {
                <Col>Description  :        {product.description}        </Col>
 
                <Button onClick={()=>dispatch($addLike(product._id))}>Like</Button>
-                  <span>{processing? <Spin/>:  <h1>{product.likes.length}</h1> }</span>
+                  <span>{processing? <Spin/>: product.likes.length>0&& <h1>{product.likes.length}</h1> }</span>
                <Button onClick={()=>dispatch($removeLike(product._id))}>UnLike</Button>
                <Button onClick={()=>hide(!show)}>Comments: </Button> 
                  {show&&product.comments.length>0&& product.comments.map(comment => comment.text)}
