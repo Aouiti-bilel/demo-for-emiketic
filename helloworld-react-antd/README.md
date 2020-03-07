@@ -30,42 +30,56 @@ A boilerplate and reference implementation for web applications built with React
 ## Usage
 
 ```sh
-# install dependencies
-npm install
+#server setup
+  # install dependencies
+    npm install
 
-# run app in development on port 3000
-npm run dev
+  # run server for developement on port 5000 
+    npm run server
 
-# run tests
-npm run test
+# Client Setup
 
-# build for production
-npm run build
+  cd helloworld-react-antd
+  # install dependencies
+  npm install
 
-# lint code for critical issues
-npm run lint:critical
+  # run app in development on port 3000
+  npm run dev
 
-# lint code
-npm run lint
+  # run tests
+  npm run test
 
-# format code
-npm run format
-```
+  # build for production
+  npm run build
 
-## Debugging
+  # lint code for critical issues
+  npm run lint:critical
 
-From DevTools
+  # lint code
+  npm run lint
 
-```javascript
-// use logger
-Logger.debug('Hello World!');
+ # run both client && server
+   npm run both
+  # format code
+ 
+ 
 
-// check if there is an authenticated session
-AuthService.isAuthenticated();
+  npm run format
+  ```
+  ## Debugging
 
-// get state from Redux store
-$store.getState().MyModule.myField;
+  From DevTools
 
-// dispatch action from Redux store
-$store.dispatch($state.MyModule.$myAction(/* args */));
-```
+  ```javascript
+  // use logger
+  Logger.debug('Hello World!');
+
+  // check if there is an authenticated session
+  AuthService.isAuthenticated();
+
+  // get state from Redux store
+  $store.getState().MyModule.myField;
+
+  // dispatch action from Redux store
+  $store.dispatch($state.MyModule.$myAction(/* args */));
+  ```
