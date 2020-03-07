@@ -169,6 +169,26 @@ export const $addLike = StateHelper.createAsyncOperation(MODULE, 'addLike', (id,
       .finally(() => Activity.done(MODULE, $addLike.NAME));
   };
 });
+export const $addProduct = StateHelper.createAsyncOperation(MODULE, 'addProduct', (data) => {
+  return (dispatch) => {
+    Activity.processing(MODULE, $addProduct.NAME);
+    dispatch($addProduct.request());
+
+    return fetch(`${API_ENDPOINT}/products/add`, {
+      method: 'POST',
+      headers: {
+        Authorization: `${AuthService.getAccessToken()}`,
+       
+      },
+      body: 
+        data
+    })
+      .then(FetchHelper.ResponseHandler, FetchHelper .ErrorHandler)
+      .then((result) => dispatch($addProduct.success(result)))
+      .catch((error) => dispatch($addProduct.failure(error)))
+      .finally(() => Activity.done(MODULE, $addProduct.NAME));
+  };
+});
 /**
  * Update task
  */
@@ -274,10 +294,10 @@ export function reducer(state = defineInitialState(), action) {
        product:{ ...state.product, comments: action.comments}
      }
    }
-    case $fetchTasks.FAILURE:
+    case $addProduct.SUCCESS:
       return {
         ...state,
-        tasks: null,
+        products: [...state.products, action.data]
       };
     default:
       return state;

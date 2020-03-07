@@ -25,6 +25,7 @@ const   ProductList = ({ products, user}) =>  {
     return products.filter(product => product.user === user.id).length===0 ? (
         <h1>there is No Produc For You</h1>
          // <Redirect to='/company'/>
+         
        ):(
          <div>
              <h2>All Products</h2>

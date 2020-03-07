@@ -28,7 +28,7 @@ router.post('/add', auth, async(req, res) =>{
         return    res.status(404).json({ msg: 'YOU Must Build Company To Add Product'});
         }
         const product = await newProduct.save()
-        res.status(200).json(product)
+        res.status(200).json({data: product})
     } catch (err) {
         console.log(err.message);
         res.send('Internal Server Error');
